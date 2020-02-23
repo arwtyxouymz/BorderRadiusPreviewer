@@ -2,6 +2,7 @@
 
 This is a Vue.js implemented version of [this](https://github.com/florinpop17/app-ideas/blob/master/Projects/1-Beginner/Border-Radius-Previewer.md).
 
+[Demo](https://border-radius-previewer.netlify.com/)
 
 ## User Stories
 
