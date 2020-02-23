@@ -9,7 +9,12 @@
     <form novalidate>
       <label for="border-radius">border-radius: </label>
       <input type="text" id="border-radius" v-model="borderRadius" />
-      <button @click.prevent=copyText>Copy</button>
+      <div class="tooltip">
+        <button @click.prevent="copyText" @mouseout="undoTooltipText">
+          <span class="tooltip-text">{{ tooltipText }}</span>
+          Copy
+        </button>
+      </div>
     </form>
   </div>
 </template>
@@ -18,7 +23,8 @@
 export default {
   data () {
     return {
-      borderRadius: "0% 0% 0% 0%"
+      borderRadius: "0% 0% 0% 0%",
+      tooltipText: "Copy to clipboard"
     }
   },
   computed: {
@@ -37,7 +43,11 @@ export default {
       document.execCommand("copy");
       window.getSelection().removeAllRanges();
 
-      alert("Copied to clipboard");
+      this.tooltipText = "Copied!"
+    },
+
+    undoTooltipText () {
+      this.tooltipText = "Copy to clipboard"
     }
   }
 }
@@ -86,6 +96,42 @@ input {
 input:focus {
   background: #e9f5fb;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.tooltip {
+  position: relative;
+  display: inline-block;
+}
+
+.tooltip .tooltip-text {
+  visibility: hidden;
+  text-align: center;
+  position: absolute;
+  /* left: 50%; */
+  bottom: 150%;
+  background: #555;
+  width: 200%;
+  border-radius: 6px;
+  padding: 5px;
+  margin-left: -90%;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.tooltip .tooltip-text::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: 5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: #555 transparent transparent transparent;
+}
+
+.tooltip:hover .tooltip-text {
+  visibility: visible;
+  opacity: 1;
 }
 
 button {
